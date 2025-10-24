@@ -2,44 +2,257 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lista de Médicos</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
   <style>
-    body { font-family: Arial; background: #f4f9fc; margin: 20px; }
-    h1   { color: #0077c2; }
-    a    { color: #0077c2; text-decoration: none; font-weight: bold; }
-    table{ width: 100%; border-collapse: collapse; background: #fff; margin-top: 20px; }
-    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
-    th   { background: #0077c2; color: white; }
-    .acciones a { margin-right: 10px; }
+    :root {
+      --primary-color: #6f42c1;
+      --primary-dark: #5a32a3;
+      --secondary-color: #e9ecef;
+      --accent-color: #20c997;
+      --text-color: #2d3748;
+      --light-color: #f8f9fa;
+      --border-color: #dee2e6;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      color: var(--text-color);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .header-card {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .content-card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      padding: 30px;
+      margin-bottom: 30px;
+      border: none;
+    }
+
+    .btn-primary-custom {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(111, 66, 193, 0.3);
+    }
+
+    .btn-secondary-custom {
+      background-color: var(--secondary-color);
+      border: none;
+      color: var(--text-color);
+      padding: 12px 24px;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary-custom:hover {
+      background-color: #dde1e6;
+      transform: translateY(-2px);
+    }
+
+    .table-custom {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .table-custom thead th {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      color: white;
+      border: none;
+      padding: 15px;
+      font-weight: 600;
+    }
+
+    .table-custom tbody tr {
+      transition: all 0.3s ease;
+    }
+
+    .table-custom tbody tr:hover {
+      background-color: rgba(111, 66, 193, 0.05);
+    }
+
+    .table-custom tbody td {
+      padding: 15px;
+      vertical-align: middle;
+      border-color: var(--border-color);
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .edit-btn {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background-color: var(--primary-dark);
+      color: white;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background-color: #c82333;
+      color: white;
+    }
+
+    .icon-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #6c757d;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      color: var(--secondary-color);
+    }
+
+    @media (max-width: 768px) {
+      .header-card {
+        padding: 20px;
+      }
+      
+      .content-card {
+        padding: 20px;
+      }
+      
+      .table-responsive {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="header-card">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <div class="icon-container">
+            <i class="bi bi-people fs-4"></i>
+          </div>
+          <div>
+            <h1 class="h3 mb-0">Lista de Médicos</h1>
+            <p class="mb-0 opacity-75">Gestione el registro de profesionales médicos</p>
+          </div>
+        </div>
+        <a th:href="@{/}" class="btn btn-light btn-sm">
+          <i class="bi bi-house-door me-1"></i> Volver al Inicio
+        </a>
+      </div>
+    </div>
 
-  <h1>👨‍⚕️ Lista de Médicos</h1>
-  <a th:href="@{/profesionales/nuevo}">+ Agregar Nuevo Médico</a> |
-  <a th:href="@{/}">← Volver al Inicio</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <a th:href="@{/profesionales/nuevo}" class="btn btn-primary-custom">
+        <i class="bi bi-person-plus me-2"></i> Agregar Nuevo Médico
+      </a>
+    </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Especialidad</th>
-        <th>Horario Disponible</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr th:each="m : ${profesionales}">
-        <td th:text="${m.id}"></td>
-        <td th:text="${m.especialidad}"></td>
-        <td th:text="${m.horarioDisponible}"></td>
-        <td class="acciones">
-          <a th:href="@{/profesionales/editar/{id}(id=${m.id})}">Editar</a> |
-          <a th:href="@{/profesionales/eliminar/{id}(id=${m.id})}">Eliminar</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="content-card">
+      <div class="table-responsive">
+        <table class="table table-custom table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Especialidad</th>
+              <th>Horario Disponible</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="m : ${profesionales}" th:if="${profesionales.size() > 0}">
+              <td th:text="${m.id}"></td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-heart-pulse me-2 text-primary"></i>
+                  <span th:text="${m.especialidad}"></span>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-clock me-2 text-success"></i>
+                  <span th:text="${m.horarioDisponible}"></span>
+                </div>
+              </td>
+              <td>
+                <div class="d-flex gap-2">
+                  <a th:href="@{/profesionales/editar/{id}(id=${m.id})}" class="action-btn edit-btn">
+                    <i class="bi bi-pencil"></i> Editar
+                  </a>
+                  <a th:href="@{/profesionales/eliminar/{id}(id=${m.id})}" class="action-btn delete-btn">
+                    <i class="bi bi-trash"></i> Eliminar
+                  </a>
+                </div>
+              </td>
+            </tr>
+            <tr th:if="${profesionales.size() == 0}">
+              <td colspan="4">
+                <div class="empty-state">
+                  <i class="bi bi-people"></i>
+                  <h4>No hay médicos registrados</h4>
+                  <p class="text-muted">Agregue el primer médico haciendo clic en el botón superior</p>
+                  <a th:href="@{/profesionales/nuevo}" class="btn btn-primary-custom mt-2">
+                    <i class="bi bi-person-plus me-2"></i> Agregar  Médico
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

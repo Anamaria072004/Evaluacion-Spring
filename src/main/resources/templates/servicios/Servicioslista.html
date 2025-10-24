@@ -2,48 +2,269 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lista de Consultas</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
   <style>
-    body { font-family: Arial; background: #f4f9fc; margin: 20px; }
-    h1   { color: #0077c2; }
-    a    { color: #0077c2; text-decoration: none; font-weight: bold; }
-    table{ width: 100%; border-collapse: collapse; background: #fff; margin-top: 20px; }
-    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
-    th   { background: #0077c2; color: white; }
-    .acciones a { margin-right: 10px; }
+    :root {
+      --primary-color: #6f42c1;
+      --primary-dark: #5a32a3;
+      --secondary-color: #e9ecef;
+      --accent-color: #20c997;
+      --text-color: #2d3748;
+      --light-color: #f8f9fa;
+      --border-color: #dee2e6;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+      color: var(--text-color);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .header-card {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .content-card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+      padding: 30px;
+      margin-bottom: 30px;
+      border: none;
+    }
+
+    .btn-primary-custom {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      border: none;
+      color: white;
+      padding: 12px 24px;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary-custom:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(111, 66, 193, 0.3);
+    }
+
+    .btn-secondary-custom {
+      background-color: var(--secondary-color);
+      border: none;
+      color: var(--text-color);
+      padding: 12px 24px;
+      font-weight: 600;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-secondary-custom:hover {
+      background-color: #dde1e6;
+      transform: translateY(-2px);
+    }
+
+    .table-custom {
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .table-custom thead th {
+      background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+      color: white;
+      border: none;
+      padding: 15px;
+      font-weight: 600;
+    }
+
+    .table-custom tbody tr {
+      transition: all 0.3s ease;
+    }
+
+    .table-custom tbody tr:hover {
+      background-color: rgba(111, 66, 193, 0.05);
+    }
+
+    .table-custom tbody td {
+      padding: 15px;
+      vertical-align: middle;
+      border-color: var(--border-color);
+    }
+
+    .action-btn {
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .edit-btn {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .edit-btn:hover {
+      background-color: var(--primary-dark);
+      color: white;
+    }
+
+    .delete-btn {
+      background-color: #dc3545;
+      color: white;
+    }
+
+    .delete-btn:hover {
+      background-color: #c82333;
+      color: white;
+    }
+
+    .icon-container {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+
+    .price-badge {
+      background: linear-gradient(135deg, var(--accent-color) 0%, #1aa179 100%);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #6c757d;
+    }
+
+    .empty-state i {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      color: var(--secondary-color);
+    }
+
+    .description-cell {
+      max-width: 250px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="header-card">
+      <div class="d-flex justify-content-between align-items-center">
+        <div class="d-flex align-items-center">
+          <div class="icon-container">
+            <i class="bi bi-clipboard2-data fs-4"></i>
+          </div>
+          <div>
+            <h1 class="h3 mb-0">Tipos de Consultas</h1>
+            <p class="mb-0 opacity-75">Gestione los diferentes servicios médicos disponibles</p>
+          </div>
+        </div>
+        <a th:href="@{/}" class="btn btn-light btn-sm">
+          <i class="bi bi-house-door me-1"></i> Volver al Inicio
+        </a>
+      </div>
+    </div>
 
-  <h1>📋 Tipos de Consultas</h1>
-  <a th:href="@{/servicios/nuevo}">+ Agregar Nueva Consulta</a> |
-  <a th:href="@{/}">← Volver al Inicio</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <a th:href="@{/servicios/nuevo}" class="btn btn-primary-custom">
+        <i class="bi bi-plus-circle me-2"></i> Agregar Nueva Consulta
+      </a>
+    </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Descripción</th>
-        <th>Duración</th>
-        <th>Precio</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr th:each="s : ${servicios}">
-        <td th:text="${s.id}"></td>
-        <td th:text="${s.nombre}"></td>
-        <td th:text="${s.descripcion}"></td>
-        <td th:text="${s.duracion}"></td>
-        <td th:text="${s.precio}"></td>
-        <td class="acciones">
-          <a th:href="@{/servicios/editar/{id}(id=${s.id})}">Editar</a> |
-          <a th:href="@{/servicios/eliminar/{id}(id=${s.id})}">Eliminar</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <div class="content-card">
+      <div class="table-responsive">
+        <table class="table table-custom table-hover">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Duración</th>
+              <th>Precio</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="s : ${servicios}" th:if="${servicios.size() > 0}">
+              <td th:text="${s.id}"></td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-clipboard2-check me-2 text-primary"></i>
+                  <strong th:text="${s.nombre}"></strong>
+                </div>
+              </td>
+              <td class="description-cell" th:text="${s.descripcion}"></td>
+              <td>
+                <div class="d-flex align-items-center">
+                  <i class="bi bi-clock me-2 text-info"></i>
+                  <span th:text="${s.duracion}"></span>
+                </div>
+              </td>
+              <td>
+                <span class="price-badge">
+                  <i class="bi bi-currency-dollar me-1"></i>
+                  <span th:text="${#numbers.formatDecimal(s.precio, 1, 2)}"></span>
+                </span>
+              </td>
+              <td>
+                <div class="d-flex gap-2">
+                  <a th:href="@{/servicios/editar/{id}(id=${s.id})}" class="action-btn edit-btn">
+                    <i class="bi bi-pencil"></i> Editar
+                  </a>
+                  <a th:href="@{/servicios/eliminar/{id}(id=${s.id})}" class="action-btn delete-btn">
+                    <i class="bi bi-trash"></i> Eliminar
+                  </a>
+                </div>
+              </td>
+            </tr>
+            <tr th:if="${servicios.size() == 0}">
+              <td colspan="6">
+                <div class="empty-state">
+                  <i class="bi bi-clipboard2-x"></i>
+                  <h4>No hay consultas registradas</h4>
+                  <p class="text-muted">Agregue el primer tipo de consulta haciendo clic en el botón superior</p>
+                  <a th:href="@{/servicios/nuevo}" class="btn btn-primary-custom mt-2">
+                    <i class="bi bi-clipboard2-plus me-2"></i> Agregar Primera Consulta
+                  </a>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

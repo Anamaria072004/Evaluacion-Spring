@@ -1,5 +1,7 @@
 package com.spring.controller;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +25,9 @@ public class UsuarioController {
 
     @GetMapping("/nuevo")
     public String mostrarFormulario(Model model) {
-        model.addAttribute("usuario", new Usuario());
+        Usuario usuario = new Usuario();
+        usuario.setFechaRegistro(LocalDate.now().toString()); 
+        model.addAttribute("usuario", usuario);
         return "usuarios/Usuariosformulario";
     }
 

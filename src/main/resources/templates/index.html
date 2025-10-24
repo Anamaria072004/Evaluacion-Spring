@@ -2,69 +2,207 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Clínica Salud+ - Inicio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica- Sistema de Gestión</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <style>
+        :root {
+            --primary-color: #6f42c1;
+            --primary-dark: #5a32a3;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f9fc;
+            font-family: 'Segoe UI', sans-serif;
+            background: #f8f9fa;
+            min-height: 100vh;
             margin: 0;
             padding: 0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 60px 0;
             text-align: center;
         }
 
-        header {
-            background-color: #0077c2;
-            color: white;
-            padding: 20px;
-            font-size: 24px;
+        .logo {
+            font-size: 3rem;
+            margin-bottom: 15px;
         }
 
-        .menu {
-            margin-top: 40px;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
+        .title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .menu-section {
+            padding: 60px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
+            margin-top: 30px;
         }
 
-        .menu a {
-            background-color: #ffffff;
-            border: 2px solid #0077c2;
-            color: #0077c2;
-            padding: 20px 30px;
-            text-decoration: none;
-            font-size: 18px;
-            border-radius: 8px;
-            width: 200px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: background-color 0.3s, color 0.3s;
+        .menu-card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
         }
 
-        .menu a:hover {
-            background-color: #0077c2;
+        .menu-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-bottom: 10px;
+        }
+
+        .card-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .btn-module {
+            background: var(--primary-color);
             color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .btn-module:hover {
+            background: var(--primary-dark);
+            color: white;
+            transform: translateY(-2px);
         }
 
         footer {
+            background: #2d3748;
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
             margin-top: 60px;
-            font-size: 14px;
-            color: #666;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        🏥 Sistema de Citas Médicas - Clínica Salud+
+
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="bi bi-heart-pulse"></i>
+            </div>
+			<h1 class="title">Ana Maria Acevedo Moreno</h1>
+        
+		   <h1 class="title">Clínica Salud+</h1>            
+		   <p class="subtitle">Sistema de Gestión Médica</p>
+        </div>
     </header>
 
-    <div class="menu">
-        <a th:href="@{/usuarios}">👤 Gestión de Pacientes</a>
-        <a th:href="@{/profesionales}">👨‍⚕️ Gestión de Médicos</a>
-        <a th:href="@{/servicios}">📋 Gestión de Consultas</a>
-        <a th:href="@{/citas}">📅 Gestión de Citas</a>
-    </div>
 
- 
+    <section class="menu-section">
+        <div class="container">
+            <h2 class="text-center mb-4" style="color: var(--primary-dark);">Gestion</h2>
+            
+            <div class="menu-grid">
+                <!-- Pacientes -->
+                <div class="menu-card">
+                    <div class="card-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <h3 class="card-title">Pacientes - Usuarios </h3>
+                    <p class="card-description">Gestión de pacientes e información personal</p>
+                    <a th:href="@{/usuarios}" class="btn-module">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                        Acceder
+                    </a>
+                </div>
+
+                <!-- Médicos -->
+                <div class="menu-card">
+                    <div class="card-icon">
+                        <i class="bi bi-person-badge"></i>
+                    </div>
+                    <h3 class="card-title">Médicos - Profesional</h3>
+                    <p class="card-description">Administración del equipo médico</p>
+                    <a th:href="@{/profesionales}" class="btn-module">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                        Acceder
+                    </a>
+                </div>
+
+                <!-- Consultas -->
+                <div class="menu-card">
+                    <div class="card-icon">
+                        <i class="bi bi-clipboard2-pulse"></i>
+                    </div>
+                    <h3 class="card-title">Consultas - Servicios</h3>
+                    <p class="card-description">Tipos de consulta y servicios</p>
+                    <a th:href="@{/servicios}" class="btn-module">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                        Acceder
+                    </a>
+                </div>
+
+                <!-- Citas -->
+                <div class="menu-card">
+                    <div class="card-icon">
+                        <i class="bi bi-calendar-check"></i>
+                    </div>
+                    <h3 class="card-title">Citas</h3>
+                    <p class="card-description">Programación de citas médicas</p>
+                    <a th:href="@{/citas}" class="btn-module">
+                        <i class="bi bi-box-arrow-in-right me-2"></i>
+                        Acceder
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p class="mb-2"><strong>Clínica Salud+</strong></p>
+            <p class="mb-0">Sistema de Gestión Médica - Ana Maria Acevedo Moreno © 2025</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

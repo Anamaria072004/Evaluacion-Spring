@@ -109,8 +109,5 @@ public class Usuario {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-
-    
-    
     
 }
