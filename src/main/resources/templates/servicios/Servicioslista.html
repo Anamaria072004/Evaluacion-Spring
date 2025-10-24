@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Consultas</title>
+  <style>
+    body { font-family: Arial; background: #f4f9fc; margin: 20px; }
+    h1   { color: #0077c2; }
+    a    { color: #0077c2; text-decoration: none; font-weight: bold; }
+    table{ width: 100%; border-collapse: collapse; background: #fff; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    th   { background: #0077c2; color: white; }
+    .acciones a { margin-right: 10px; }
+  </style>
+</head>
+<body>
+
+  <h1>📋 Tipos de Consultas</h1>
+  <a th:href="@{/servicios/nuevo}">+ Agregar Nueva Consulta</a> |
+  <a th:href="@{/}">← Volver al Inicio</a>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Descripción</th>
+        <th>Duración</th>
+        <th>Precio</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="s : ${servicios}">
+        <td th:text="${s.id}"></td>
+        <td th:text="${s.nombre}"></td>
+        <td th:text="${s.descripcion}"></td>
+        <td th:text="${s.duracion}"></td>
+        <td th:text="${s.precio}"></td>
+        <td class="acciones">
+          <a th:href="@{/servicios/editar/{id}(id=${s.id})}">Editar</a> |
+          <a th:href="@{/servicios/eliminar/{id}(id=${s.id})}">Eliminar</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>

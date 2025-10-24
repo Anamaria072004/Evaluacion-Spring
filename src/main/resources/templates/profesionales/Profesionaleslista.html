@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Lista de Médicos</title>
+  <style>
+    body { font-family: Arial; background: #f4f9fc; margin: 20px; }
+    h1   { color: #0077c2; }
+    a    { color: #0077c2; text-decoration: none; font-weight: bold; }
+    table{ width: 100%; border-collapse: collapse; background: #fff; margin-top: 20px; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    th   { background: #0077c2; color: white; }
+    .acciones a { margin-right: 10px; }
+  </style>
+</head>
+<body>
+
+  <h1>👨‍⚕️ Lista de Médicos</h1>
+  <a th:href="@{/profesionales/nuevo}">+ Agregar Nuevo Médico</a> |
+  <a th:href="@{/}">← Volver al Inicio</a>
+
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Especialidad</th>
+        <th>Horario Disponible</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="m : ${profesionales}">
+        <td th:text="${m.id}"></td>
+        <td th:text="${m.especialidad}"></td>
+        <td th:text="${m.horarioDisponible}"></td>
+        <td class="acciones">
+          <a th:href="@{/profesionales/editar/{id}(id=${m.id})}">Editar</a> |
+          <a th:href="@{/profesionales/eliminar/{id}(id=${m.id})}">Eliminar</a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</body>
+</html>
